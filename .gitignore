@@ -1,8 +1,5 @@
 node_modules/
 build/
 .env
-npm-debug.log*
-node_modules/
-build/
-.env
+devBackend/
 npm-debug.log*
