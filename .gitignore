@@ -3,3 +3,5 @@ build/
 .env
 devBackend/
 npm-debug.log*
+backend/
+devBackend/
