@@ -11,7 +11,7 @@ function FactsSection() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/facts") // ✅ backend se data la rahe
+    fetch("https://devpath-1.onrender.com/api/facts") // ✅ backend se data la rahe
       .then(res => res.json())
       .then(data => setFacts(data))
       .catch(err => console.error(err));

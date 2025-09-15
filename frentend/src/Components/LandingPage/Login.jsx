@@ -21,7 +21,7 @@ function Login() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("http://localhost:5000/login", data);
+      const res = await axios.post("https://devpath-1.onrender.com/login", data);
 
       alert(`Welcome ${res.data.user.name}!`);
       console.log("Login Response:", res.data); // Debugging

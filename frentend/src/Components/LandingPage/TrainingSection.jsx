@@ -1,10 +1,11 @@
 import React from "react";
 
 function TrainingSection() {
-  // 🔹 Training Data (easily extendable)
+  // 🔹 Training Data (3 items)
   const trainings = [
     { title: "Summer Training", color: "border-info", path: "/summer-training" },
     { title: "Winter Training", color: "border-warning", path: "/winter-training" },
+    { title: "Industrial Training", color: "border-success", path: "/industrial-training" },
   ];
 
   return (
@@ -15,10 +16,10 @@ function TrainingSection() {
           <span style={{ color: "#ff6600" }}>Training At </span>DevPath Technology
         </h2>
 
-        {/* Compact Row */}
+        {/* Responsive Grid */}
         <div className="row g-2 justify-content-center">
           {trainings.map((training, index) => (
-            <div key={index} className="col-6 col-md-3">
+            <div key={index} className="col-12 col-md-6 col-lg-4">
               <div
                 className={`training-card border-top ${training.color} shadow-sm py-3 px-2`}
                 style={{

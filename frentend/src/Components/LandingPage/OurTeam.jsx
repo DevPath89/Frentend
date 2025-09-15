@@ -8,7 +8,7 @@ function OurTeam() {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/ourteam/all");
+        const res = await fetch("https://devpath-1.onrender.com/api/ourteam/all");
         const data = await res.json();
         setTeamMembers(data); // backend se array of team members
       } catch (err) {
@@ -36,7 +36,7 @@ function OurTeam() {
           <div key={member._id} className="col-lg-4 col-md-6 mb-4">
             <div className="card shadow-sm h-100 text-center">
               <img
-                src={`http://localhost:5000/uploads/${member.image}`}
+                src={`https://devpath-1.onrender.com/uploads/${member.image}`}
                 alt={member.name}
                 className="card-img-top"
                 style={{ height: "250px", objectFit: "cover" }}
