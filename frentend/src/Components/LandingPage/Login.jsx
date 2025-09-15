@@ -3,33 +3,36 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // ✅ Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 // Validation schema
 const loginSchema = yup.object().shape({
   userId: yup.string().required("User ID is required"),
   password: yup.string()
-    .length(8, "Password must be 8 characters")
+    .length(8, "Password must be exactly 8 characters")
     .required("Password is required"),
 });
 
 function Login() {
-  const navigate = useNavigate(); // ✅ Navigate hook
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(loginSchema)
   });
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("https://devpath-2.onrender.com/api/registration/login", data);
+      const res = await axios.post(
+        "https://devpath-2.onrender.com/api/registration/login",
+        data
+      );
 
-      alert(`Welcome ${res.data.user.name}!`);
-      console.log("Login Response:", res.data); // Debugging
+      // ✅ Safe alert: use name if exists, else userId
+      alert(`Welcome ${res.data.name || res.data.userId}!`);
+      console.log("Login Response:", res.data);
+
       reset();
+      navigate('/'); // Redirect to home page
 
-      // ✅ Redirect to home page
-      navigate('/'); 
-      
     } catch (error) {
       if (error.response) {
         alert("Error: " + error.response.data.message);
@@ -69,7 +72,6 @@ function Login() {
                 {...register("password")}
                 className="form-control mb-2"
                 placeholder="Enter Your 8-character Password"
-                maxLength={8}
               />
               {errors.password && <p className="text-danger mb-2">{errors.password.message}</p>}
 
