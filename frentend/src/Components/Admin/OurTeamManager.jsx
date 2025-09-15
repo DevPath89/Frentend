@@ -13,7 +13,7 @@ function OurTeamManager() {
 
   const fetchTeamMembers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/ourteam/all");
+      const res = await fetch("https://devpath-1.onrender.com/api/ourteam/all");
       const data = await res.json();
       setTeam(data);
     } catch (err) {
@@ -39,13 +39,13 @@ function OurTeamManager() {
 
     try {
       if (editingId) {
-        await fetch(`http://localhost:5000/api/ourteam/${editingId}`, {
+        await fetch(`https://devpath-1.onrender.com/api/ourteam/${editingId}`, {
           method: "PUT",
           body: form,
         });
         alert("Team member updated successfully");
       } else {
-        await fetch("http://localhost:5000/api/ourteam/add", {
+        await fetch("https://devpath-1.onrender.com/api/ourteam/add", {
           method: "POST",
           body: form,
         });
@@ -63,7 +63,7 @@ function OurTeamManager() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure to delete this member?")) return;
     try {
-      await fetch(`http://localhost:5000/api/ourteam/${id}`, { method: "DELETE" });
+      await fetch(`https://devpath-1.onrender.com/api/ourteam/${id}`, { method: "DELETE" });
       fetchTeamMembers();
     } catch (err) {
       console.error(err);
@@ -145,7 +145,7 @@ function OurTeamManager() {
             <div key={member._id} className="col-lg-3 col-md-4 col-sm-6 mb-4">
               <div className="card shadow-sm h-100 text-center">
                 <img
-                  src={`http://localhost:5000/uploads/${member.image}`}
+                  src={`https://devpath-1.onrender.com/uploads/${member.image}`}
                   alt={member.name}
                   className="card-img-top"
                   style={{ height: "180px", objectFit: "cover" }}

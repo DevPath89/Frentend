@@ -19,17 +19,17 @@ function Dashboard() {
   const [teamCount, setTeamCount] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/users/count")
+    fetch("https://devpath-1.onrender.com/api/users/count")
       .then(res => res.json())
       .then(data => setUserCount(data.count))
       .catch(err => console.error(err));
 
-    fetch("http://localhost:5000/api/reports/count")
+    fetch("https://devpath-1.onrender.com/api/reports/count")
       .then(res => res.json())
       .then(data => setReportCount(data.count))
       .catch(err => console.error(err));
 
-    fetch("http://localhost:5000/api/team/count")
+    fetch("https://devpath-1.onrender.com/api/team/count")
       .then(res => res.json())
       .then(data => setTeamCount(data.count))
       .catch(err => console.error(err));
