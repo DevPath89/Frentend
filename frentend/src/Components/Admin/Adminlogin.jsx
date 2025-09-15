@@ -10,7 +10,7 @@ function Adminlogin() {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://devpath-1.onrender.com/api/admin/login", {
+      const response = await fetch("https://devpath-2.onrender.com/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, password }),

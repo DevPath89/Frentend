@@ -10,7 +10,7 @@ function Users() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("https://devpath-1.onrender.com/api/users");
+        const res = await fetch("https://devpath-2.onrender.com/api/users");
         const data = await res.json();
         setUsers(data);
       } catch (err) {
@@ -32,7 +32,7 @@ function Users() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        await fetch(`https://devpath-1.onrender.com/api/users/${id}`, {
+        await fetch(`https://devpath-2.onrender.com/api/users/${id}`, {
           method: "DELETE",
         });
         setUsers(users.filter((u) => u._id !== id));
@@ -47,7 +47,7 @@ function Users() {
     const newName = prompt("Enter new name:", user.name);
     if (newName && newName !== user.name) {
       try {
-        const res = await fetch(`https://devpath-1.onrender.com/api/users/${user._id}`, {
+        const res = await fetch(`https://devpath-2.onrender.com/api/users/${user._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...user, name: newName }),

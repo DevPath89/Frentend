@@ -7,17 +7,20 @@ function OurTeamManager() {
   const [formData, setFormData] = useState({ name: "", position: "", image: null });
   const [editingId, setEditingId] = useState(null);
 
+  // Backend URL
+  const BACKEND_URL = "https://devpath-2.onrender.com";
+
   useEffect(() => {
     fetchTeamMembers();
   }, []);
 
   const fetchTeamMembers = async () => {
     try {
-      const res = await fetch("https://devpath-1.onrender.com/api/ourteam/all");
+      const res = await fetch(`${BACKEND_URL}/api/ourteam/all`);
       const data = await res.json();
       setTeam(data);
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching team:", err);
     }
   };
 
@@ -28,6 +31,7 @@ function OurTeamManager() {
 
   const handleAddOrEdit = async (e) => {
     e.preventDefault();
+
     if (!formData.name || !formData.position || (!formData.image && !editingId)) {
       return alert("All fields are required");
     }
@@ -39,23 +43,24 @@ function OurTeamManager() {
 
     try {
       if (editingId) {
-        await fetch(`https://devpath-1.onrender.com/api/ourteam/${editingId}`, {
+        await fetch(`${BACKEND_URL}/api/ourteam/${editingId}`, {
           method: "PUT",
           body: form,
         });
         alert("Team member updated successfully");
       } else {
-        await fetch("https://devpath-1.onrender.com/api/ourteam/add", {
+        await fetch(`${BACKEND_URL}/api/ourteam/add`, {
           method: "POST",
           body: form,
         });
         alert("Team member added successfully");
       }
+
       setFormData({ name: "", position: "", image: null });
       setEditingId(null);
       fetchTeamMembers();
     } catch (err) {
-      console.error(err);
+      console.error("Server error:", err);
       alert("Server error");
     }
   };
@@ -63,10 +68,10 @@ function OurTeamManager() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure to delete this member?")) return;
     try {
-      await fetch(`https://devpath-1.onrender.com/api/ourteam/${id}`, { method: "DELETE" });
+      await fetch(`${BACKEND_URL}/api/ourteam/${id}`, { method: "DELETE" });
       fetchTeamMembers();
     } catch (err) {
-      console.error(err);
+      console.error("Delete error:", err);
     }
   };
 
@@ -145,7 +150,7 @@ function OurTeamManager() {
             <div key={member._id} className="col-lg-3 col-md-4 col-sm-6 mb-4">
               <div className="card shadow-sm h-100 text-center">
                 <img
-                  src={`https://devpath-1.onrender.com/uploads/${member.image}`}
+                  src={`${BACKEND_URL}/uploads/${member.image}`}
                   alt={member.name}
                   className="card-img-top"
                   style={{ height: "180px", objectFit: "cover" }}

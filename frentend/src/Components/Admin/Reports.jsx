@@ -7,7 +7,7 @@ function Reports() {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await fetch("https://devpath-1.onrender.com/api/reports/all"); // backend API
+        const res = await fetch("https://devpath-2.onrender.com/api/reports/all"); // backend API
         const data = await res.json();
         setReports(data); // assume backend sends array of reports
       } catch (err) {

@@ -28,7 +28,7 @@ function Registration() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("https://devpath-1.onrender.com/register", {
+      const res = await axios.post("https://devpath-2.onrender.com/api/registration/register", {
         name: data.name,
         emailID: data.email,
         collegeName: data.college,
