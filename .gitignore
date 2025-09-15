@@ -5,3 +5,6 @@ devBackend/
 npm-debug.log*
 backend/
 devBackend/
+
+# Local Netlify folder
+.netlify
