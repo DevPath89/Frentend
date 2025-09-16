@@ -1,4 +1,3 @@
-// src/Components/Admin/OurTeamManager.jsx
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 
@@ -10,6 +9,8 @@ function OurTeamManager() {
   // Backend URL
   const BACKEND_URL = "https://devpath-2.onrender.com";
 
+  // -----------------
+  // Fetch all team members
   useEffect(() => {
     fetchTeamMembers();
   }, []);
@@ -24,11 +25,15 @@ function OurTeamManager() {
     }
   };
 
+  // -----------------
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({ ...prev, [name]: files ? files[0] : value }));
   };
 
+  // -----------------
+  // Add or Update team member
   const handleAddOrEdit = async (e) => {
     e.preventDefault();
 
@@ -65,6 +70,8 @@ function OurTeamManager() {
     }
   };
 
+  // -----------------
+  // Delete team member
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure to delete this member?")) return;
     try {
@@ -75,6 +82,8 @@ function OurTeamManager() {
     }
   };
 
+  // -----------------
+  // Edit button click
   const handleEditClick = (member) => {
     setEditingId(member._id);
     setFormData({ name: member.name, position: member.position, image: null });
