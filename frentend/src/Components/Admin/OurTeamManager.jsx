@@ -6,11 +6,10 @@ function OurTeamManager() {
   const [formData, setFormData] = useState({ name: "", position: "", image: null });
   const [editingId, setEditingId] = useState(null);
 
-  // Backend URL
+  // Backend URL (Render host)
   const BACKEND_URL = "https://devpath-2.onrender.com";
 
-  // -----------------
-  // Fetch all team members
+  // Fetch all team members on load
   useEffect(() => {
     fetchTeamMembers();
   }, []);
@@ -25,14 +24,12 @@ function OurTeamManager() {
     }
   };
 
-  // -----------------
-  // Handle input changes
+  // Handle input changes (text + file)
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: files ? files[0] : value }));
+    setFormData(prev => ({ ...prev, [name]: files ? files[0] : value }));
   };
 
-  // -----------------
   // Add or Update team member
   const handleAddOrEdit = async (e) => {
     e.preventDefault();
@@ -47,43 +44,46 @@ function OurTeamManager() {
     if (formData.image) form.append("image", formData.image);
 
     try {
-      if (editingId) {
-        await fetch(`${BACKEND_URL}/api/ourteam/${editingId}`, {
-          method: "PUT",
-          body: form,
-        });
-        alert("Team member updated successfully");
-      } else {
-        await fetch(`${BACKEND_URL}/api/ourteam/add`, {
-          method: "POST",
-          body: form,
-        });
-        alert("Team member added successfully");
-      }
+      const url = editingId
+        ? `${BACKEND_URL}/api/ourteam/${editingId}`
+        : `${BACKEND_URL}/api/ourteam/add`;
+      const method = editingId ? "PUT" : "POST";
 
-      setFormData({ name: "", position: "", image: null });
-      setEditingId(null);
-      fetchTeamMembers();
+      const res = await fetch(url, { method, body: form });
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(editingId ? "Team member updated" : "Team member added");
+        setFormData({ name: "", position: "", image: null });
+        setEditingId(null);
+        fetchTeamMembers();
+      } else {
+        alert(data.error || "Server error");
+      }
     } catch (err) {
       console.error("Server error:", err);
       alert("Server error");
     }
   };
 
-  // -----------------
   // Delete team member
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure to delete this member?")) return;
     try {
-      await fetch(`${BACKEND_URL}/api/ourteam/${id}`, { method: "DELETE" });
-      fetchTeamMembers();
+      const res = await fetch(`${BACKEND_URL}/api/ourteam/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (res.ok) {
+        fetchTeamMembers();
+        alert(data.message);
+      } else {
+        alert(data.error || "Delete failed");
+      }
     } catch (err) {
       console.error("Delete error:", err);
     }
   };
 
-  // -----------------
-  // Edit button click
+  // Populate form for editing
   const handleEditClick = (member) => {
     setEditingId(member._id);
     setFormData({ name: member.name, position: member.position, image: null });
@@ -106,7 +106,6 @@ function OurTeamManager() {
             <input
               type="text"
               name="name"
-              placeholder="Enter name"
               value={formData.name}
               onChange={handleChange}
               className="form-control"
@@ -118,7 +117,6 @@ function OurTeamManager() {
             <input
               type="text"
               name="position"
-              placeholder="Enter position"
               value={formData.position}
               onChange={handleChange}
               className="form-control"
@@ -155,14 +153,14 @@ function OurTeamManager() {
 
         {/* Team Members Grid */}
         <div className="row">
-          {team.map((member) => (
+          {team.map(member => (
             <div key={member._id} className="col-lg-3 col-md-4 col-sm-6 mb-4">
               <div className="card shadow-sm h-100 text-center">
                 <img
                   src={`${BACKEND_URL}/uploads/${member.image}`}
                   alt={member.name}
-                  className="card-img-top"
-                  style={{ height: "180px", objectFit: "cover" }}
+                  className="card-img-top img-fluid"
+                  style={{ width: "100%", height: "auto" }}
                 />
                 <div className="card-body">
                   <h5 className="card-title">{member.name}</h5>
