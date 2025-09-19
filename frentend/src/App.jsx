@@ -1,9 +1,10 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 // Landing Page Components
-import Navbar from "./Components/LandingPage/Navbar";   
+import Navbar from "./Components/LandingPage/Navbar";
 import Home from "./Components/LandingPage/Home";
 import AboutUs from "./Components/LandingPage/AboutUs";
 import Login from "./Components/LandingPage/Login";
@@ -12,6 +13,7 @@ import OurTeam from "./Components/LandingPage/OurTeam";
 import Services from "./Components/LandingPage/Services";
 import SummerTraining from "./Components/LandingPage/SummerTraining";
 import WinterTraining from "./Components/LandingPage/WinterTraining";
+import Lectures from "./Components/LandingPage/Lectures"; // ✅ user-side lectures page
 import Footer from "./Components/LandingPage/Footer";
 
 // Admin Components
@@ -19,19 +21,40 @@ import AdminLogin from "./Components/Admin/Adminlogin";
 import Dashboard from "./Components/Admin/Dashboard";
 import Users from "./Components/Admin/Users";
 import Reports from "./Components/Admin/Reports";
-import OurTeamManager from "./Components/Admin/OurTeamManager"; // ✅ Correct import
+import OurTeamManager from "./Components/Admin/OurTeamManager";
+import LecturesManager from "./Components/Admin/LecturesManager"; // ✅ admin lectures
 import ProtectedRoute from "./Components/Admin/ProtectedRoute";
 
 import "./App.css";
 
 function AppWrapper() {
   const location = useLocation();
-  const isLandingPage = !location.pathname.startsWith("/admin"); 
-  const isAdminLoginPage = location.pathname === "/admin/login";
+  const isLandingPage = !location.pathname.startsWith("/admin");
+
+  // Track login state for user-side lectures page
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const storedLogin = localStorage.getItem("isLoggedIn");
+    if (storedLogin === "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    localStorage.setItem("isLoggedIn", "true");
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("isLoggedIn");
+  };
 
   return (
     <>
-      {isLandingPage && <Navbar />}
+      {/* Navbar केवल Landing Pages पर */}
+      {isLandingPage && <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />}
 
       <Routes>
         {/* Landing Pages */}
@@ -41,18 +64,21 @@ function AppWrapper() {
         <Route path="/summer" element={<SummerTraining />} />
         <Route path="/winter" element={<WinterTraining />} />
         <Route path="/ourteam" element={<OurTeam />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Registration />} />
+
+        {/* User-side Lectures page (login required) */}
+        {isLoggedIn && <Route path="/lectures" element={<Lectures />} />}
 
         {/* Admin Login */}
         <Route path="/admin/login" element={<AdminLogin />} />
 
-        {/* Protected Admin Pages */}
+        {/* Admin Protected Pages */}
         <Route
           path="/admin/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+                <Dashboard />
             </ProtectedRoute>
           }
         />
@@ -60,7 +86,7 @@ function AppWrapper() {
           path="/admin/users"
           element={
             <ProtectedRoute>
-              <Users />
+                <Users />
             </ProtectedRoute>
           }
         />
@@ -68,21 +94,29 @@ function AppWrapper() {
           path="/admin/reports"
           element={
             <ProtectedRoute>
-              <Reports />
+                <Reports />
             </ProtectedRoute>
           }
         />
-        {/* ✅ Our Team Management Route */}
         <Route
           path="/admin/ourteam"
           element={
             <ProtectedRoute>
-              <OurTeamManager />
+                <OurTeamManager />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/lectures"
+          element={
+            <ProtectedRoute>
+                <LecturesManager />
             </ProtectedRoute>
           }
         />
       </Routes>
 
+      {/* Footer केवल Landing Pages पर */}
       {isLandingPage && <Footer />}
     </>
   );

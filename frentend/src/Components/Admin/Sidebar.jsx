@@ -19,6 +19,7 @@ function Sidebar() {
     { path: "/admin/users", label: "Users" },
     { path: "/admin/reports", label: "Reports" },
     { path: "/admin/ourteam", label: "Our Team" },
+    { path: "/admin/lectures", label: "Lectures" }, // ✅ New Option Added
   ];
 
   return (
@@ -32,7 +33,12 @@ function Sidebar() {
               location.pathname === item.path ? "bg-warning text-dark" : ""
             }`}
           >
-            <Link to={item.path} className="text-decoration-none text-light">
+            <Link
+              to={item.path}
+              className={`text-decoration-none ${
+                location.pathname === item.path ? "text-dark" : "text-light"
+              }`}
+            >
               {item.label}
             </Link>
           </li>

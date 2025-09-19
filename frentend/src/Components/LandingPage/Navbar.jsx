@@ -1,8 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaHome, FaInfoCircle, FaServicestack, FaUsers, FaSignInAlt, FaUserPlus, FaBookOpen } from "react-icons/fa";
+import {
+  FaHome,
+  FaInfoCircle,
+  FaServicestack,
+  FaUsers,
+  FaSignInAlt,
+  FaUserPlus,
+  FaBookOpen,
+  FaChalkboardTeacher,
+} from "react-icons/fa";
 
-function Navbar() {
+function Navbar({ isLoggedIn }) {
   const navConfig = {
     logo: { src: "/images/Dev.png", alt: "DevPath Logo" },
     items: [
@@ -10,8 +19,20 @@ function Navbar() {
       { name: "About Us", href: "/about", type: "link", icon: <FaInfoCircle /> },
       { name: "Services", href: "/services", type: "link", icon: <FaServicestack /> },
       { name: "Our Team", href: "/ourteam", type: "link", icon: <FaUsers /> },
-      { name: "Login", href: "/login", type: "link", icon: <FaSignInAlt /> },
-      { name: "Registration", href: "/register", type: "link", icon: <FaUserPlus /> },
+
+      // ✅ Lecture Option (Only after login)
+      ...(isLoggedIn
+        ? [{ name: "Lectures", href: "/lectures", type: "link", icon: <FaChalkboardTeacher /> }]
+        : []),
+
+      // ✅ If not logged in → Show Login + Register
+      ...(!isLoggedIn
+        ? [
+            { name: "Login", href: "/login", type: "link", icon: <FaSignInAlt /> },
+            { name: "Registration", href: "/register", type: "link", icon: <FaUserPlus /> },
+          ]
+        : []),
+
       {
         name: "Training",
         type: "dropdown",
@@ -69,7 +90,10 @@ function Navbar() {
                   <ul className="dropdown-menu">
                     {item.children.map((child, i) => (
                       <li key={i}>
-                        <Link className="dropdown-item navbar-link d-flex align-items-center" to={child.href}>
+                        <Link
+                          className="dropdown-item navbar-link d-flex align-items-center"
+                          to={child.href}
+                        >
                           <span className="me-1">{child.icon || item.icon}</span> {child.name}
                         </Link>
                       </li>
