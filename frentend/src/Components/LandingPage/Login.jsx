@@ -13,7 +13,7 @@ const loginSchema = yup.object().shape({
     .required("Password is required"),
 });
 
-function Login() {
+function Login({ setIsLoggedIn }) {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(loginSchema)
@@ -26,13 +26,13 @@ function Login() {
         data
       );
 
-      // ✅ Safe alert: use name if exists, else userId
       alert(`Welcome ${res.data.name || res.data.userId}!`);
-      console.log("Login Response:", res.data);
+
+      localStorage.setItem("isLoggedIn", "true"); // save login state
+      setIsLoggedIn(true);
 
       reset();
       navigate('/'); // Redirect to home page
-
     } catch (error) {
       if (error.response) {
         alert("Error: " + error.response.data.message);
@@ -49,14 +49,11 @@ function Login() {
         <h1 className='text-center'>
           User <span className='text-success'>Login</span>
         </h1>
-        <p className='text-center mb-4'>
-          Enter your UserID and Password to login.
-        </p>
+        <p className='text-center mb-4'>Enter your UserID and Password to login.</p>
 
         <div className="row">
           <div className="col-sm-6 mx-auto">
             <form onSubmit={handleSubmit(onSubmit)} className="p-4 bg-white rounded shadow">
-
               <span>User ID</span>
               <input
                 type="text"

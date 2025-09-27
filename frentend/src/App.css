@@ -510,3 +510,65 @@
   }
 }
 
+
+
+
+/* Desktop Table */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th,
+.users-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.users-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+/* Mobile Table → Card View */
+@media screen and (max-width: 768px) {
+  .users-table, .users-table thead, .users-table tbody, .users-table th, .users-table td, .users-table tr {
+    display: block;
+  }
+
+  .users-table thead tr {
+    display: none; /* hide table headers on mobile */
+  }
+
+  .users-table tr {
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background: #fff;
+  }
+
+  .users-table td {
+    border: none;
+    padding: 6px 10px;
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .users-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: 45%;
+    font-weight: bold;
+  }
+}

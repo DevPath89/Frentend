@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaInfoCircle,
@@ -9,9 +9,18 @@ import {
   FaUserPlus,
   FaBookOpen,
   FaChalkboardTeacher,
+  FaSignOutAlt
 } from "react-icons/fa";
 
-function Navbar({ isLoggedIn }) {
+function Navbar({ isLoggedIn, setIsLoggedIn }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.setItem("isLoggedIn", "false");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
+
   const navConfig = {
     logo: { src: "/images/Dev.png", alt: "DevPath Logo" },
     items: [
@@ -20,18 +29,15 @@ function Navbar({ isLoggedIn }) {
       { name: "Services", href: "/services", type: "link", icon: <FaServicestack /> },
       { name: "Our Team", href: "/ourteam", type: "link", icon: <FaUsers /> },
 
-      // ✅ Lecture Option (Only after login)
       ...(isLoggedIn
-        ? [{ name: "Lectures", href: "/lectures", type: "link", icon: <FaChalkboardTeacher /> }]
-        : []),
-
-      // ✅ If not logged in → Show Login + Register
-      ...(!isLoggedIn
         ? [
-            { name: "Login", href: "/login", type: "link", icon: <FaSignInAlt /> },
-            { name: "Registration", href: "/register", type: "link", icon: <FaUserPlus /> },
+            { name: "Lectures", href: "/lectures", type: "link", icon: <FaChalkboardTeacher /> },
+            { name: "Logout", href: "#", type: "link", icon: <FaSignOutAlt />, action: handleLogout }
           ]
-        : []),
+        : [
+            { name: "Login", href: "/login", type: "link", icon: <FaSignInAlt /> },
+            { name: "Registration", href: "/register", type: "link", icon: <FaUserPlus /> }
+          ]),
 
       {
         name: "Training",
@@ -72,9 +78,19 @@ function Navbar({ isLoggedIn }) {
             {navConfig.items.map((item, index) =>
               item.type === "link" ? (
                 <li key={index} className="nav-item">
-                  <Link className="nav-link navbar-link d-flex align-items-center" to={item.href}>
-                    <span className="me-1">{item.icon}</span> {item.name}
-                  </Link>
+                  {item.action ? (
+                    <span
+                      className="nav-link navbar-link d-flex align-items-center"
+                      onClick={item.action}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <span className="me-1">{item.icon}</span> {item.name}
+                    </span>
+                  ) : (
+                    <Link className="nav-link navbar-link d-flex align-items-center" to={item.href}>
+                      <span className="me-1">{item.icon}</span> {item.name}
+                    </Link>
+                  )}
                 </li>
               ) : (
                 <li key={index} className="nav-item dropdown">

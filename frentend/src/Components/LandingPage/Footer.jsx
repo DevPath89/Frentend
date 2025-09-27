@@ -31,8 +31,21 @@ function Footer() {
       icon: "fas fa-map-marker-alt",
       text: "123, Lucknow, UP, India",
     },
-    { icon: "fas fa-phone", text: "+91 98765 43210" },
-    { icon: "fas fa-envelope", text: "support@devpath.com" },
+    {
+      icon: "fas fa-phone",
+      text: "+91 8948759047",
+      link: "tel:+918948759047",
+    },
+    {
+      icon: "fas fa-phone",
+      text: "+91 6392498661",
+      link: "tel:+916392498661",
+    },
+    {
+      icon: "fas fa-envelope",
+      text: "support@devpath.com",
+      link: "mailto:support@devpath.com",
+    },
   ];
 
   return (
@@ -86,7 +99,13 @@ function Footer() {
             {contactInfo.map((c, i) => (
               <p key={i}>
                 <i className={`${c.icon} text-warning me-2`}></i>
-                {c.text}
+                {c.link ? (
+                  <a href={c.link} className="text-light text-decoration-none">
+                    {c.text}
+                  </a>
+                ) : (
+                  c.text
+                )}
               </p>
             ))}
           </div>

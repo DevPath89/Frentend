@@ -28,7 +28,6 @@ function Users() {
 
   const handlePageClick = (data) => setCurrentPage(data.selected);
 
-  // ✅ Delete User
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
@@ -42,18 +41,22 @@ function Users() {
     }
   };
 
-  // ✅ Edit User (simple prompt example)
   const handleEdit = async (user) => {
     const newName = prompt("Enter new name:", user.name);
     if (newName && newName !== user.name) {
       try {
-        const res = await fetch(`https://devpath-2.onrender.com/api/users/${user._id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...user, name: newName }),
-        });
+        const res = await fetch(
+          `https://devpath-2.onrender.com/api/users/${user._id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...user, name: newName }),
+          }
+        );
         const updatedUser = await res.json();
-        setUsers(users.map((u) => (u._id === updatedUser._id ? updatedUser : u)));
+        setUsers(
+          users.map((u) => (u._id === updatedUser._id ? updatedUser : u))
+        );
       } catch (err) {
         console.error(err);
       }
@@ -65,6 +68,7 @@ function Users() {
       <Sidebar />
       <div className="users-content">
         <h2>Registered Users</h2>
+
         <div className="table-responsive">
           <table className="users-table">
             <thead>
@@ -77,27 +81,22 @@ function Users() {
                 <th>Training Type</th>
                 <th>Course</th>
                 <th>Mobile</th>
-                <th>Actions</th> {/* 👈 New Column */}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {displayUsers.map((user, index) => (
                 <tr key={user._id || index}>
-                  <td>{user.userId}</td>
-                  <td>{user.name}</td>
-                  <td>{user.emailID}</td>
-                  <td>{user.collegeName}</td>
-                  <td>{user.passingYear}</td>
-                  <td>{user.trainingType}</td>
-                  <td>{user.course}</td>
-                  <td>{user.mobileNo}</td>
-                  <td>
-                    <button
-                      onClick={() => handleEdit(user)}
-                      style={{ marginRight: "8px" }}
-                    >
-                      Edit
-                    </button>
+                  <td data-label="UserID">{user.userId}</td>
+                  <td data-label="Name">{user.name}</td>
+                  <td data-label="Email">{user.emailID}</td>
+                  <td data-label="College">{user.collegeName}</td>
+                  <td data-label="Passing Year">{user.passingYear}</td>
+                  <td data-label="Training Type">{user.trainingType}</td>
+                  <td data-label="Course">{user.course}</td>
+                  <td data-label="Mobile">{user.mobileNo}</td>
+                  <td data-label="Actions">
+                    <button onClick={() => handleEdit(user)}>Edit</button>
                     <button
                       onClick={() => handleDelete(user._id)}
                       style={{ color: "red" }}
